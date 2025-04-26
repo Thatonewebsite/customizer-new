@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customize Your Product</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 20px; }
+    .step { margin-bottom: 20px; }
+    .colors-container { display: flex; flex-direction: column; width: 250px; float: left; margin-right: 30px; }
+    .color-block { display: flex; justify-content: space-between; margin-bottom: 10px; }
+    .customization-area { display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; }
+    .preview-area { position: relative; height: 500px; }
+    .preview-area img#outline { max-height: 100%; max-width: 300px; }
+    #uploadedLogo { position: absolute; display: none; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .controls { display: flex; flex-direction: column; margin-left: 40px; }
+    .move-buttons-row { display: flex; justify-content: center; }
+    .move-buttons-row button { margin: 2px; }
+  </style>
+</head>
+<body>
+  <h1>Customize Your Product</h1>
+  <div class="step">
+    <h2>Step 1: Select Your Colors</h2>
+    <div class="colors-container">
+      <div class="color-block">Aqua <input type="number" min="0" value="0"></div>
+      <div class="color-block">Beige <input type="number" min="0" value="0"></div>
+      <div class="color-block">Black <input type="number" min="0" value="0"></div>
+      <div class="color-block">Blue <input type="number" min="0" value="0"></div>
+      <div class="color-block">Cream <input type="number" min="0" value="0"></div>
+      <div class="color-block">Green <input type="number" min="0" value="0"></div>
+      <div class="color-block">Lavender <input type="number" min="0" value="0"></div>
+      <div class="color-block">Magenta <input type="number" min="0" value="0"></div>
+      <div class="color-block">Navy <input type="number" min="0" value="0"></div>
+      <div class="color-block">Olive <input type="number" min="0" value="0"></div>
+      <div class="color-block">Purple <input type="number" min="0" value="0"></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h2>Step 2: Upload Your Logo</h2>
+    <input type="file" id="logoInput" accept="image/*">
+  </div>
+
+  <div class="step">
+    <h2>Step 3: Preview & Adjust Your Logo</h2>
+    <div class="customization-area">
+      <div class="preview-area">
+        <img id="outline" src="outline-no-handle.png" alt="Product Outline">
+        <img id="uploadedLogo" alt="Uploaded Logo">
+        <p style="margin-top: 520px;">This image is for placement reference only.</p>
+      </div>
+      <div class="controls">
+        <div class="move-buttons-row">
+          <button onclick="moveLogo('up')">⬆️</button>
+        </div>
+        <div class="move-buttons-row">
+          <button onclick="moveLogo('left')">⬅️</button>
+          <button onclick="moveLogo('right')">➡️</button>
+        </div>
+        <div class="move-buttons-row">
+          <button onclick="moveLogo('down')">⬇️</button>
+        </div>
+        <button onclick="resizeLogo('bigger')">Bigger</button>
+        <button onclick="resizeLogo('smaller')">Smaller</button>
+        <button onclick="rotateLogo()">Rotate</button>
+      </div>
+    </div>
+  </div>
+
+  <button onclick="finishCustomization()">Finish & Add to Cart</button>
+
+  <script src="main.js"></script>
+</body>
+</html>
