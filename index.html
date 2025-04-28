@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customize Your Product</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="steps">
+      <div class="step" id="step1">
+        <h2>Step 1: Select Quantities</h2>
+        <div class="colors-container">
+          <div class="color-block">Aqua <input type="number" min="0" value="0"></div>
+          <div class="color-block">Beige <input type="number" min="0" value="0"></div>
+          <div class="color-block">Black <input type="number" min="0" value="0"></div>
+          <div class="color-block">Blue <input type="number" min="0" value="0"></div>
+          <div class="color-block">Cream <input type="number" min="0" value="0"></div>
+          <div class="color-block">Green <input type="number" min="0" value="0"></div>
+          <div class="color-block">Lavender <input type="number" min="0" value="0"></div>
+          <div class="color-block">Magenta <input type="number" min="0" value="0"></div>
+          <div class="color-block">Navy <input type="number" min="0" value="0"></div>
+          <div class="color-block">Olive <input type="number" min="0" value="0"></div>
+          <div class="color-block">Rose Quartz <input type="number" min="0" value="0"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step3">
+        <h2>Step 2: Upload Your Logo</h2>
+        <input type="file" id="logoInput" accept="image/*">
+        <h2>Step 3: Adjust Your Logo</h2>
+        <div class="buttons">
+          <button onclick="moveLogo('up')">⬆️</button>
+          <div>
+            <button onclick="moveLogo('left')">⬅️</button>
+            <button onclick="moveLogo('right')">➡️</button>
+          </div>
+          <button onclick="moveLogo('down')">⬇️</button>
+          <button onclick="resizeLogo('bigger')">Bigger</button>
+          <button onclick="resizeLogo('smaller')">Smaller</button>
+          <button onclick="rotateLogo()">Rotate</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <img id="outline" src="tumbler-no-handle.png" alt="Tumbler Outline">
+      <img id="uploadedLogo" style="display: none;" />
+    </div>
+  </div>
+
+  <button class="finish-button" onclick="finishCustomization()">Finish & Add to Cart</button>
+
+<script src="main.js"></script>
+</body>
+</html>
