@@ -1,7 +1,9 @@
 // Initialize EmailJS
-emailjs.init('Rtkcht6XjUgzbH1ez'); // Your Public Key
+emailjs.init('Rtkcht6XjUgzbH1ez'); // Your EmailJS Public Key
 
 let uploadedFile;
+let uploadedFileURL = '';
+let previewImageURL = '';
 
 // Handle file upload
 const logoInput = document.getElementById('logoInput');
@@ -68,7 +70,7 @@ function finishCustomization() {
 
     if (quantity > 0) {
       itemsToAdd.push({
-        id: 44697551044796,
+        id: 44697551044796, // Your Shopify Variant ID
         quantity: quantity,
         properties: {
           Color: colorName
@@ -84,38 +86,65 @@ function finishCustomization() {
     return;
   }
 
-  html2canvas(document.querySelector('.preview-area')).then(canvas => {
-    canvas.toBlob(blob => {
-      const formData = new FormData();
-      formData.append('service_id', 'service_d1teu2a');
-      formData.append('template_id', 'template_28a6vg1');
-      formData.append('user_id', 'Rtkcht6XjUgzbH1ez');
-      formData.append('attachment', blob, 'preview.png');
-      formData.append('logo_upload', uploadedFile, uploadedFile.name);
-      formData.append('order_quantities', JSON.stringify(quantities));
-      formData.append('logo_x', logoX);
-      formData.append('logo_y', logoY);
-      formData.append('logo_scale', logoScale);
-      formData.append('logo_rotation', logoRotation);
+  // Step 1: Upload the customer's original logo to Uploadcare
+  const logoData = new FormData();
+  logoData.append('UPLOADCARE_STORE', '1');
+  logoData.append('UPLOADCARE_PUB_KEY', 'caf3256ca08a6169a6a3'); // Your Uploadcare Public Key
+  logoData.append('file', uploadedFile);
 
-      fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          console.log('Email sent successfully!');
-          addToShopifyCart(itemsToAdd);
-        } else {
-          console.error('Failed to send email.');
-          alert('There was a problem sending the customization email.');
-        }
-      })
-      .catch(error => {
-        console.error('Error sending email:', error);
-        alert('There was a problem sending the customization email.');
+  fetch('https://upload.uploadcare.com/base/', {
+    method: 'POST',
+    body: logoData
+  })
+  .then(response => response.json())
+  .then(data => {
+    uploadedFileURL = `https://ucarecdn.com/${data.file}/`;
+
+    // Step 2: Now capture screenshot
+    return html2canvas(document.querySelector('.preview-area'));
+  })
+  .then(canvas => {
+    return new Promise((resolve) => {
+      canvas.toBlob(blob => {
+        const screenshotData = new FormData();
+        screenshotData.append('UPLOADCARE_STORE', '1');
+        screenshotData.append('UPLOADCARE_PUB_KEY', 'caf3256ca08a6169a6a3');
+        screenshotData.append('file', blob, 'preview.png');
+
+        fetch('https://upload.uploadcare.com/base/', {
+          method: 'POST',
+          body: screenshotData
+        })
+        .then(response => response.json())
+        .then(data => {
+          previewImageURL = `https://ucarecdn.com/${data.file}/`;
+          resolve();
+        });
       });
     });
+  })
+  .then(() => {
+    // Step 3: Send email with EmailJS
+    const emailParams = {
+      order_quantities: JSON.stringify(quantities),
+      logo_x: logoX,
+      logo_y: logoY,
+      logo_scale: logoScale,
+      logo_rotation: logoRotation,
+      uploaded_logo_url: uploadedFileURL,
+      preview_image_url: previewImageURL
+    };
+
+    return emailjs.send('service_d1teu2a', 'template_28a6vg1', emailParams);
+  })
+  .then(() => {
+    console.log('Email sent successfully!');
+    // Step 4: Add items to Shopify cart
+    addToShopifyCart(itemsToAdd);
+  })
+  .catch(error => {
+    console.error('Error during process:', error);
+    alert('There was a problem submitting the customization.');
   });
 }
 
