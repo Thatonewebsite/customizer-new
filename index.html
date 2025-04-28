@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customize Your Product</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- html2canvas and EmailJS libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
   <h1>Customize Your Product</h1>
@@ -30,7 +36,7 @@
 
       <div class="step">
         <h2>Step 2: Upload Your Logo</h2>
-        <input type="file" id="logoInput" accept="image/*">
+        <input type="file" id="logoInput" accept="image/png, image/jpeg, image/svg+xml">
       </div>
     </div>
 
@@ -60,6 +66,7 @@
 
   <button class="finish-button" onclick="finishCustomization()">Finish & Add to Cart</button>
 
+  <!-- JS -->
   <script src="main.js"></script>
 </body>
 </html>
